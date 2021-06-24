@@ -1,4 +1,9 @@
 import os
+import time
+
+
+def wait():
+    input("Press enter key to continue : ")
 
 
 # Make sure deps are present
@@ -62,3 +67,40 @@ print("Looking for how many devices connected : " + str(len(devices)))
 if len(devices) > 1:
     print("Please connect only 1 device")
     exit()
+
+print("Settings up wireless ADB\nMake sure to enable Wireless ADB in Developer Settings on your device\nDO NOT "
+      "DISCONNECT UNTIL INSTRUCTED")
+wait()
+print("Trying to start wireless ADB ")
+# ADB on Port 5555
+os.system("adb tcpip 5555")
+# Wait 3 seconds so device can finish setup properly
+time.sleep(3)
+# grab local ip address to connect via adb wireless
+ifconfig = device.shell("ifconfig wlan0")
+
+# finding IP from that mess
+for i in range(len(ifconfig)-10):
+    char = []
+    for k in range(10):
+        n = ifconfig[i+k]
+        char += n
+    if char == ['i', 'n', 'e', 't', ' ', 'a', 'd', 'd', 'r', ':']:
+        break
+ip = ""
+i = i + 10
+while n != " ":
+    n = ifconfig[i]
+    ip = ip + n
+    i = i + 1
+
+print(ip)
+print("Now you can disconnect the cable, ADB will be connected wirelessly")
+wait()
+# Switch over to wireless ADB
+os.system("adb connect " + str(ip))
+time.sleep(2)
+# Wait for it to connect
+devices = client.devices()
+# Update devices
+device = devices[0]
