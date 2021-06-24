@@ -2,6 +2,14 @@ import os
 import time
 
 
+def plotGraph(x, y):
+    import matplotlib.pyplot as p
+    p.plot(x, y)
+    p.xlabel("Time")
+    p.ylabel("Battery Level in %")
+    p.title("Results")
+    p.show()
+
 def wait():
     input("Press enter key to continue : ")
 
@@ -10,6 +18,7 @@ def wait():
 def check_deps():
     try:
         from ppadb.client import Client as AdbClient
+        import matplotlib.pyplot as p
         return True
     except ModuleNotFoundError:
         return False
@@ -21,6 +30,7 @@ def install_dep():
     else:
         # install deps if not there
         os.system('pip install -U pure-python-adb')
+        os.system("pip install matplotlib")
         if check_deps():
             return True
         else:
@@ -128,13 +138,14 @@ while True:
         level = level.strip("\n")
         print("In " + str(mins) + " minutes, Battery is ", end="")
         print(str(level) + "%")
-        battery.append(level)
+        battery.append(int(level))
         timePeriod.append(mins)
         mins += 1
         time.sleep(60)
     except:
-        print(battery)
-        print(timePeriod)
         break
 
+print(battery)
+print(timePeriod)
 print("Device Disconneceted")
+plotGraph(timePeriod, battery)
