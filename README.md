@@ -5,3 +5,4 @@
 Make sure you have the following
 - Python 3.X
 - Windows (Linux is not yet supported)
+- ADB Drivers
