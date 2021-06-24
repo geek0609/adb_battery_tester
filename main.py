@@ -80,10 +80,10 @@ time.sleep(3)
 ifconfig = device.shell("ifconfig wlan0")
 
 # finding IP from that mess
-for i in range(len(ifconfig)-10):
+for i in range(len(ifconfig) - 10):
     char = []
     for k in range(10):
-        n = ifconfig[i+k]
+        n = ifconfig[i + k]
         char += n
     if char == ['i', 'n', 'e', 't', ' ', 'a', 'd', 'd', 'r', ':']:
         break
@@ -104,3 +104,31 @@ time.sleep(2)
 devices = client.devices()
 # Update devices
 device = devices[0]
+battery = []
+# infinite loop with try catch to break it
+while True:
+    try:
+        time.sleep(3)
+        a = device.shell("dumpsys battery | grep level")
+        for i in range(len(a) - 8):
+            char = []
+            for k in range(8):
+                n = a[i + k]
+                char += n
+            if char == [' ', ' ', 'l', 'e', 'v', 'e', 'l', ':']:
+                break
+        level = ""
+        i = i + 8
+        while n != "\n":
+            n = a[i]
+            level = level + n
+            i = i + 1
+        level = level.strip(" ")
+        level = level.strip("\n")
+        print(level)
+        battery.append(level)
+    except:
+        print(battery)
+        break
+
+print("Device Disconneceted")
