@@ -2,6 +2,14 @@ import os
 import time
 
 
+def saveCSV (result):
+    import pandas as pd
+    f = open("results/file.csv", "w+")
+    f.close()
+    df = pd.DataFrame(result)
+    df.to_csv('results/file.csv')
+
+
 def plotGraph(x, y):
     import matplotlib.pyplot as p
     p.plot(x, y)
@@ -9,6 +17,7 @@ def plotGraph(x, y):
     p.ylabel("Battery Level in %")
     p.title("Results")
     p.show()
+
 
 def wait():
     input("Press enter key to continue : ")
@@ -19,6 +28,7 @@ def check_deps():
     try:
         from ppadb.client import Client as AdbClient
         import matplotlib.pyplot as p
+        import pandas as pd
         return True
     except ModuleNotFoundError:
         return False
@@ -31,6 +41,7 @@ def install_dep():
         # install deps if not there
         os.system('pip install -U pure-python-adb')
         os.system("pip install matplotlib")
+        os.system("pip install pandas")
         if check_deps():
             return True
         else:
@@ -117,6 +128,7 @@ device = devices[0]
 battery = []
 timePeriod = []
 mins = 0
+results = [["Battery Level", "Time (Minutes)"]]
 # infinite loop with try catch to break it
 while True:
     try:
@@ -140,6 +152,7 @@ while True:
         print(str(level) + "%")
         battery.append(int(level))
         timePeriod.append(mins)
+        results.append([int(level),int(mins)])
         mins += 1
         time.sleep(60)
     except:
@@ -147,5 +160,7 @@ while True:
 
 print(battery)
 print(timePeriod)
+print(results)
 print("Device Disconneceted")
+saveCSV(results)
 plotGraph(timePeriod, battery)
