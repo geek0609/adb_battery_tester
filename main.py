@@ -105,10 +105,11 @@ devices = client.devices()
 # Update devices
 device = devices[0]
 battery = []
+timePeriod = []
+mins = 0
 # infinite loop with try catch to break it
 while True:
     try:
-        time.sleep(3)
         a = device.shell("dumpsys battery | grep level")
         for i in range(len(a) - 8):
             char = []
@@ -125,10 +126,15 @@ while True:
             i = i + 1
         level = level.strip(" ")
         level = level.strip("\n")
-        print(level)
+        print("In " + str(mins) + " minutes, Battery is ", end="")
+        print(str(level) + "%")
         battery.append(level)
+        timePeriod.append(mins)
+        mins += 1
+        time.sleep(60)
     except:
         print(battery)
+        print(timePeriod)
         break
 
 print("Device Disconneceted")
