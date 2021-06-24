@@ -28,6 +28,10 @@ if os.name != 'nt':
     print("Only Windows is supported in this version")
     exit()
 
+# Kill and start ADB
+os.system('adb kill-server')
+os.system('adb start-server')
+
 os.system('cls')
 print("===============\nWelcome to ADB Battery Tester\nBy github.com/geek0609\n===============")
 
