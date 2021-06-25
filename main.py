@@ -2,21 +2,21 @@ import os
 import time
 
 
-def saveCSV(result):
+def saveCSV(result, resultTime):
     import pandas as pd
-    f = open("results/file.csv", "w+")
+    f = open("results/" + str(resultTime) + "/file.csv", "w+")
     f.close()
     df = pd.DataFrame(result)
-    df.to_csv('results/file.csv')
+    df.to_csv("results/" + str(resultTime) + "/file.csv")
 
 
-def plotGraph(x, y):
+def plotGraph(x, y, resultTime):
     import matplotlib.pyplot as p
     p.plot(x, y)
     p.xlabel("Time in Min")
     p.ylabel("Battery Level in %")
     p.title("Results")
-    p.show()
+    p.savefig("results/" + str(resultTime) + '/result.jpg')
 
 
 def wait():
@@ -173,5 +173,7 @@ print(battery)
 print(timePeriod)
 print(results)
 print("Device Disconneceted")
-saveCSV(results)
-plotGraph(timePeriod, battery)
+TimeNow = int(time.time())
+os.mkdir("results/" + str(TimeNow))
+saveCSV(results, TimeNow)
+plotGraph(timePeriod, battery, TimeNow)
