@@ -6,3 +6,7 @@ Make sure you have the following
 - Python 3.X
 - Windows (Linux is not yet supported)
 - ADB Drivers
+
+# Instructions 
+
+Just run the python file (main.py).
